@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(995, 685)
+        MainWindow.resize(950, 685)
         self.actionOpen_Image = QAction(MainWindow)
         self.actionOpen_Image.setObjectName(u"actionOpen_Image")
         self.actionSave_Result = QAction(MainWindow)
@@ -129,14 +129,20 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 649, 619))
-        self.verticalLayout_6 = QVBoxLayout(self.scrollAreaWidgetContents)
-        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
-        self.imageCanvas = QLabel(self.scrollAreaWidgetContents)
-        self.imageCanvas.setObjectName(u"imageCanvas")
-        self.imageCanvas.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 604, 619))
+        self.horizontalLayout_2 = QHBoxLayout(self.scrollAreaWidgetContents)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.lblOriginal = QLabel(self.scrollAreaWidgetContents)
+        self.lblOriginal.setObjectName(u"lblOriginal")
+        self.lblOriginal.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.verticalLayout_6.addWidget(self.imageCanvas)
+        self.horizontalLayout_2.addWidget(self.lblOriginal)
+
+        self.lblProcessed = QLabel(self.scrollAreaWidgetContents)
+        self.lblProcessed.setObjectName(u"lblProcessed")
+        self.lblProcessed.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.horizontalLayout_2.addWidget(self.lblProcessed)
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
@@ -145,7 +151,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 995, 23))
+        self.menubar.setGeometry(QRect(0, 0, 950, 23))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         MainWindow.setMenuBar(self.menubar)
@@ -188,7 +194,8 @@ class Ui_MainWindow(object):
         self.btnApplyShapes.setText(QCoreApplication.translate("MainWindow", u"Apply Shape Detection", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabTask1), QCoreApplication.translate("MainWindow", u"Edge Detection", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabTask2), QCoreApplication.translate("MainWindow", u"Active Contours", None))
-        self.imageCanvas.setText(QCoreApplication.translate("MainWindow", u"Please load an image from the File menu.", None))
+        self.lblOriginal.setText(QCoreApplication.translate("MainWindow", u"Original Image", None))
+        self.lblProcessed.setText(QCoreApplication.translate("MainWindow", u"Processed Image", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
     # retranslateUi
 

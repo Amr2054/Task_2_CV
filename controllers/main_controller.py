@@ -10,7 +10,7 @@ class MainController:
         self.model = model
         self.window = window
 
-        self.canny_edge_detector = Canny_EdgeDetector_Controller(self.ui,self.model,self.display_image)
+        self.canny_edge_detector = Canny_EdgeDetector_Controller(self.ui,self.model,self.display_processed_image)
 
         self._connect_signals()
 
@@ -26,16 +26,42 @@ class MainController:
             # Read image via OpenCV and store in Model
             self.model.original_image = cv2.imread(file_path)
             self.model.processed_image = None
-            self.display_image(self.model.original_image)
+
+            # Display the original image on the left label
+            self.display_original_image(self.model.original_image)
+
+            # Clear the right label since we just loaded a new image
+            self.ui.lblProcessed.clear()
+            self.ui.lblProcessed.setText("Ready for processing.")
+
+            self.ui.statusbar.showMessage(f"Loaded: {file_path}", 3000)
 
 
-    def display_image(self, cv_img):
+    def display_original_image(self, cv_img):
+        if cv_img is None:
+            return
+
         pixmap = cv_to_pixmap(cv_img)
         if pixmap:
             # Scale the pixmap to fit the label while maintaining aspect ratio
             scaled_pixmap = pixmap.scaled(
-                self.ui.imageCanvas.size(),
+                self.ui.lblOriginal.size(),
                 Qt.KeepAspectRatio,
                 Qt.SmoothTransformation
             )
-            self.ui.imageCanvas.setPixmap(scaled_pixmap)
+            self.ui.lblOriginal.setPixmap(scaled_pixmap)
+
+    def display_processed_image(self, cv_img):
+
+        if cv_img is None:
+            return
+
+        pixmap = cv_to_pixmap(cv_img)
+        if pixmap:
+            # Scale the pixmap to fit the label while maintaining aspect ratio
+            scaled_pixmap = pixmap.scaled(
+                self.ui.lblProcessed.size(),
+                Qt.KeepAspectRatio,
+                Qt.SmoothTransformation
+            )
+            self.ui.lblProcessed.setPixmap(scaled_pixmap)

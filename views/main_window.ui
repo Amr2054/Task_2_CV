@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>995</width>
+    <width>950</width>
     <height>685</height>
    </rect>
   </property>
@@ -156,15 +156,25 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>649</width>
+         <width>604</width>
          <height>619</height>
         </rect>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_6">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QLabel" name="imageCanvas">
+         <widget class="QLabel" name="lblOriginal">
           <property name="text">
-           <string>Please load an image from the File menu.</string>
+           <string>Original Image</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblProcessed">
+          <property name="text">
+           <string>Processed Image</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -182,7 +192,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>995</width>
+     <width>950</width>
      <height>23</height>
     </rect>
    </property>
