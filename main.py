@@ -1,48 +1,29 @@
 import sys
+from PySide6.QtWidgets import QApplication, QMainWindow
+from views.ui_main_window import Ui_MainWindow
+from models.image_model import ImageModel
+from controllers.main_controller import MainController
 
 
-from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel,QMessageBox
-from PySide6.QtCore import QFile
-from PySide6.QtUiTools import QUiLoader
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        # Setup for the UI
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
 
-# class MainWindow(QMainWindow):
-#     def __init__(self):
-#         super().__init__()
-#         self.setWindowTitle("GUI")
-#         self.setGeometry(700,0,500,500)
-#         # self.setWindowIcon(QIcon('icon.png'))
-#         self.initUI()
-#
-#     def initUI(self):
-#         self.label = QLabel(self)
-#         self.label.setText("label")
-#         self.label.move(50,50)
-#
-#         self.b1 = QPushButton("Button 1", self)
-#         self.b1.clicked.connect(self.clicked)
-#
-#     def clicked(self):
-#         self.label.setText("button pressed")
-#         self.update()
-#
-#     def update(self):
-#         self.label.adjustSize()
 
-def main():
-    app = QApplication()
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
 
-    loader = QUiLoader()
-    file = QFile("gui.ui")
-    file.open(QFile.ReadOnly)
+    # 1. Create the View
+    window = MainWindow()
 
-    window = loader.load(file)
-    file.close()
+    # 2. Create the Model
+    model = ImageModel()
 
-    window.pushButton.clicked.connect(lambda:
-                                      QMessageBox.information
-                                      (window,'Message',window.lineEdit.text()))
+    # 3. Create the Controller, passing the UI, Model, and Window
+    controller = MainController(window.ui, model, window)
+
     window.show()
-    app.exec() #  waits for user inputs
-
-if __name__ == '__main__':
-    main()
+    sys.exit(app.exec())
