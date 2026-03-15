@@ -1,5 +1,3 @@
-import math
-import sys
 import numpy as np
 import cv2
 
@@ -17,21 +15,16 @@ import cv2
 #
 #     edges = cv2.Canny(gray, min_val, max_val)
 #     return edges
-#
-#
-# import math
-# import numpy as np
-# import cv2
 
-gaussian_filter = (1.0 / 140.0) * np.array([
-    [1, 1, 2, 2, 2, 1, 1],
-    [1, 2, 2, 4, 2, 2, 1],
-    [2, 2, 4, 8, 4, 2, 2],
-    [2, 4, 8, 16, 8, 4, 2],
-    [2, 2, 4, 8, 4, 2, 2],
-    [1, 2, 2, 4, 2, 2, 1],
-    [1, 1, 2, 2, 2, 1, 1]
-])
+
+
+gaussian_filter = (1.0 / 273.0) * np.array([
+    [1,  4,  7,  4, 1],
+    [4, 16, 26, 16, 4],
+    [7, 26, 41, 26, 7],
+    [4, 16, 26, 16, 4],
+    [1,  4,  7,  4, 1]
+], dtype=np.float32)
 
 sobelX = np.array([
     [-1,  0,  1],
@@ -46,9 +39,7 @@ sobelY = np.array([
 ])
 
 def apply_canny(image, min_val, max_val):
-    """
-    Executing the full Canny edge detection pipeline from scratch.
-    """
+
     if image is None:
         return None
 
@@ -57,26 +48,24 @@ def apply_canny(image, min_val, max_val):
     else:
         gray_image = image
 
-    height, width = gray_image.shape
 
-    # 1. Gaussian Smoothing
-    gaussianData = gaussianSmoothing(gray_image)
+    # 1. Gaussian Smoothing (Vectorized)
+    gaussianData = convolve2d(gray_image, gaussian_filter)
 
-    # 2. Gradients
-    Gx = getGradientX(gaussianData, height, width)
-    Gy = getGradientY(gaussianData, height, width)
+    # 2. Gradients (Vectorized)
+    Gx = convolve2d(gaussianData, sobelX)
+    Gy = convolve2d(gaussianData, sobelY)
 
-    # 3. Magnitude and Angle
-    gradient = getMagnitude(Gx, Gy, height, width)
-    gradientAngle = getAngle(Gx, Gy, height, width)
+    # 3. Magnitude and Angle (Vectorized)
+    gradient = getMagnitude(Gx, Gy)
+    gradientAngle = getAngle(Gx, Gy)
 
     # 4. Non-Maxima Suppression
-    localMaxSuppressed = localMaximization(gradient, gradientAngle, height, width)
-    suppressedImage = localMaxSuppressed[0]
+    suppressedImage = localMaximization(gradient, gradientAngle)
 
-    # Normalize the suppressed image to 0-255
-    if suppressedImage.max() > 0:
-        suppressedImage = (suppressedImage / suppressedImage.max()) * 255.0
+    # # Normalize the suppressed image to 0-255
+    # if suppressedImage.max() > 0:
+    #     suppressedImage = (suppressedImage / suppressedImage.max()) * 255.0
 
     # 5. Double Thresholding
     thresholded, weak, strong = double_thresholding(suppressedImage, min_val, max_val)
@@ -86,127 +75,108 @@ def apply_canny(image, min_val, max_val):
 
     return np.uint8(final_edges)
 
-def gaussianSmoothing(image):
-    imageArray = np.array(image)
-    gaussianArr = np.copy(imageArray)  # Better practice to copy
 
-    for i in range(3, image.shape[0] - 3):
-        for j in range(3, image.shape[1] - 3):
-            sum_val = applyGaussianFilterAtPoint(imageArray, i, j)
-            gaussianArr[i][j] = sum_val
-    return gaussianArr
+def convolve2d(img, kernel):
+    kH, kW = kernel.shape
+    padH, padW = kH // 2, kW // 2
 
+    img = img.astype(np.float32)
 
-def applyGaussianFilterAtPoint(imageData, row, column):
-    sum_val = 0
-    for i in range(row - 3, row + 4):
-        for j in range(column - 3, column + 4):
-            sum_val += gaussian_filter[i - row + 3][j - column + 3] * imageData[i][j]
-    return sum_val
+    padded = np.pad(
+        img,
+        ((padH, padH), (padW, padW)),
+        mode='edge'
+    )
 
+    shape = (img.shape[0], img.shape[1], kH, kW)
+    strides = (
+        padded.strides[0],
+        padded.strides[1],
+        padded.strides[0],
+        padded.strides[1]
+    )
 
-def getGradientX(imgArr, height, width):
-    imageData = np.zeros(shape=(height, width))
-    for i in range(3, height - 5):
-        for j in range(3, width - 5):  # Fixed: size -> width
-            imageData[i + 1][j + 1] = sobelAtX(imgArr, i, j)
-    return abs(imageData)
+    windows = np.lib.stride_tricks.as_strided(
+        padded,
+        shape=shape,
+        strides=strides
+    )
 
-
-def getGradientY(imgArr, height, width):
-    imageData = np.zeros(shape=(height, width))
-    for i in range(3, height - 5):
-        for j in range(3, width - 5):  # Fixed: size -> width
-            imageData[i + 1][j + 1] = sobelAtY(imgArr, i, j)
-    return abs(imageData)
+    return np.einsum('ijkl,kl->ij', windows, kernel)
 
 
-def getMagnitude(Gx, Gy, height, width):
-    gradientData = np.empty(shape=(height, width))
-    for row in range(height):
-        for column in range(width):
-            gradientData[row][column] = ((Gx[row][column] ** 2 + Gy[row][column] ** 2) ** 0.5) / 1.4142
-    return gradientData
+def getMagnitude(Gx, Gy):
+    """Vectorized calculation of gradient magnitude."""
+    return np.sqrt(Gx ** 2 + Gy ** 2)
 
 
-def getAngle(Gx, Gy, height, width):
-    gradientData = np.empty(shape=(height, width))
-    for i in range(height):
-        for j in range(width):
-            if Gx[i][j] == 0:
-                angle = 90 if Gy[i][j] > 0 else -90
-            else:
-                angle = math.degrees(math.atan(Gy[i][j] / Gx[i][j]))
-            if angle < 0:
-                angle += 360
-            gradientData[i][j] = angle
-    return gradientData
+def getAngle(Gx, Gy):
+    """Vectorized calculation of gradient angle (0 to 360 degrees)."""
+    # np.arctan2 takes (y, x) and handles division by zero automatically
+    angle = np.degrees(np.arctan2(Gy, Gx))
+
+    # Convert negative angles to 0-360 range to match NMS logic
+    angle[angle < 0] += 360
+    return angle
 
 
-def localMaximization(gradientData, gradientAngle, height, width):
-    gradient = np.zeros(shape=(height, width))
-    numberOfPixels = np.zeros(shape=(256))
-    edgePixels = 0
+def localMaximization(gradientData, gradientAngle):
 
-    for row in range(5, height - 5):
-        for col in range(5, width - 5):  # Fixed global 'image' reference
-            theta = gradientAngle[row, col]
+    height, width = gradientData.shape
+    gradient = np.zeros(shape=(height, width), dtype=np.float32)
+
+    for row in range(1, height - 1):
+        for col in range(1, width - 1):
+
+            # FOLD THE ANGLE TO 0-180 DEGREES
+            theta = gradientAngle[row, col] % 180
             gradientAtPixel = gradientData[row, col]
             value = 0
 
-            if (0 <= theta <= 22.5 or 157.5 < theta <= 202.5 or 337.5 < theta <= 360):
+            # Sector 1: Horizontal Edge (0 degrees)
+            # We check the Left and Right neighbors
+            if (0 <= theta < 22.5) or (157.5 <= theta < 180):
                 if gradientAtPixel > gradientData[row, col + 1] and gradientAtPixel > gradientData[row, col - 1]:
                     value = gradientAtPixel
-            elif (22.5 < theta <= 67.5 or 202.5 < theta <= 247.5):
-                if gradientAtPixel > gradientData[row + 1, col - 1] and gradientAtPixel > gradientData[
-                    row - 1, col + 1]:
+
+            # Sector 2: Diagonal / (45 degrees)
+            # We check the Top-Right and Bottom-Left neighbors
+            elif (22.5 <= theta < 67.5):
+                if gradientAtPixel > gradientData[row - 1, col + 1] and gradientAtPixel > gradientData[
+                    row + 1, col - 1]:
                     value = gradientAtPixel
-            elif (67.5 < theta <= 112.5 or 247.5 < theta <= 292.5):
-                if gradientAtPixel > gradientData[row + 1, col] and gradientAtPixel > gradientData[row - 1, col]:
+
+            # Sector 3: Vertical Edge (90 degrees)
+            # We check the Top and Bottom neighbors
+            elif (67.5 <= theta < 112.5):
+                if gradientAtPixel > gradientData[row - 1, col] and gradientAtPixel > gradientData[row + 1, col]:
                     value = gradientAtPixel
-            elif 112.5 < theta <= 157.5 or 292.5 < theta <= 337.5:
-                if gradientAtPixel > gradientData[row + 1, col + 1] and gradientAtPixel > gradientData[
-                    row - 1, col - 1]:
+
+            # Sector 4: Diagonal \ (135 degrees)
+            # We check the Top-Left and Bottom-Right neighbors
+            elif (112.5 <= theta < 157.5):
+                if gradientAtPixel > gradientData[row - 1, col - 1] and gradientAtPixel > gradientData[
+                    row + 1, col + 1]:
                     value = gradientAtPixel
 
             gradient[row, col] = value
-            if value > 0:
-                edgePixels += 1
-                try:
-                    numberOfPixels[int(value)] += 1
-                except IndexError:
-                    pass
 
-    return [gradient, numberOfPixels, edgePixels]
-
-
-def sobelAtX(imageData, row, column):
-    horizontal = 0
-    for i in range(0, 3):
-        for j in range(0, 3):
-            horizontal += imageData[row + i, column + j] * sobelX[i, j]
-    return horizontal
-
-def sobelAtY(imageData, row, column):
-    vertical = 0
-    for i in range(0, 3):
-        for j in range(0, 3):
-            vertical += imageData[row + i, column + j] * sobelY[i, j]
-    return vertical
+    return gradient
 
 
 def double_thresholding(img, lowThreshold, highThreshold):
-    """Applies double thresholding using absolute 0-255 integer values."""
+
+    if lowThreshold ==0:
+        lowThreshold = 1
+
     res = np.zeros_like(img)
     weak = np.int32(75)
     strong = np.int32(255)
 
-    # Find pixels that meet the threshold criteria
     strong_i, strong_j = np.where(img >= highThreshold)
-    zeros_i, zeros_j = np.where(img < lowThreshold)
+    # zeros_i, zeros_j = np.where(img < lowThreshold)
     weak_i, weak_j = np.where((img <= highThreshold) & (img >= lowThreshold))
 
-    # Assign values
     res[strong_i, strong_j] = strong
     res[weak_i, weak_j] = weak
 
