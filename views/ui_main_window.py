@@ -19,8 +19,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QAbstractSpinBox, QApplication, QCheckBox, QFormLayout,
     QFrame, QGroupBox, QHBoxLayout, QLabel,
     QMainWindow, QMenu, QMenuBar, QPushButton,
-    QScrollArea, QSizePolicy, QSpacerItem, QSpinBox,
-    QStatusBar, QTabWidget, QVBoxLayout, QWidget)
+    QScrollArea, QSizePolicy, QSlider, QSpacerItem,
+    QSpinBox, QStatusBar, QTabWidget, QVBoxLayout,
+    QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -117,6 +118,67 @@ class Ui_MainWindow(object):
         self.tabTask2.setObjectName(u"tabTask2")
         self.verticalLayout_4 = QVBoxLayout(self.tabTask2)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.groupBoxSnakeParams = QGroupBox(self.tabTask2)
+        self.groupBoxSnakeParams.setObjectName(u"groupBoxSnakeParams")
+        self.formLayoutSnake = QFormLayout(self.groupBoxSnakeParams)
+        self.formLayoutSnake.setObjectName(u"formLayoutSnake")
+        self.labelAlpha = QLabel(self.groupBoxSnakeParams)
+        self.labelAlpha.setObjectName(u"labelAlpha")
+
+        self.formLayoutSnake.setWidget(0, QFormLayout.ItemRole.LabelRole, self.labelAlpha)
+
+        self.sliderAlpha = QSlider(self.groupBoxSnakeParams)
+        self.sliderAlpha.setObjectName(u"sliderAlpha")
+        self.sliderAlpha.setOrientation(Qt.Orientation.Horizontal)
+        self.sliderAlpha.setMaximum(200)
+        self.sliderAlpha.setValue(10)
+
+        self.formLayoutSnake.setWidget(0, QFormLayout.ItemRole.FieldRole, self.sliderAlpha)
+
+        self.labelBeta = QLabel(self.groupBoxSnakeParams)
+        self.labelBeta.setObjectName(u"labelBeta")
+
+        self.formLayoutSnake.setWidget(1, QFormLayout.ItemRole.LabelRole, self.labelBeta)
+
+        self.sliderBeta = QSlider(self.groupBoxSnakeParams)
+        self.sliderBeta.setObjectName(u"sliderBeta")
+        self.sliderBeta.setOrientation(Qt.Orientation.Horizontal)
+        self.sliderBeta.setMaximum(200)
+        self.sliderBeta.setValue(10)
+
+        self.formLayoutSnake.setWidget(1, QFormLayout.ItemRole.FieldRole, self.sliderBeta)
+
+        self.labelGamma = QLabel(self.groupBoxSnakeParams)
+        self.labelGamma.setObjectName(u"labelGamma")
+
+        self.formLayoutSnake.setWidget(2, QFormLayout.ItemRole.LabelRole, self.labelGamma)
+
+        self.sliderGamma = QSlider(self.groupBoxSnakeParams)
+        self.sliderGamma.setObjectName(u"sliderGamma")
+        self.sliderGamma.setOrientation(Qt.Orientation.Horizontal)
+        self.sliderGamma.setMaximum(200)
+        self.sliderGamma.setMinimum(0)
+        self.sliderGamma.setValue(100)
+
+        self.formLayoutSnake.setWidget(2, QFormLayout.ItemRole.FieldRole, self.sliderGamma)
+
+
+        self.verticalLayout_4.addWidget(self.groupBoxSnakeParams)
+
+        self.btnApplySnake = QPushButton(self.tabTask2)
+        self.btnApplySnake.setObjectName(u"btnApplySnake")
+
+        self.verticalLayout_4.addWidget(self.btnApplySnake)
+
+        self.btnClearContour = QPushButton(self.tabTask2)
+        self.btnClearContour.setObjectName(u"btnClearContour")
+
+        self.verticalLayout_4.addWidget(self.btnClearContour)
+
+        self.verticalSpacerSnake = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_4.addItem(self.verticalSpacerSnake)
+
         self.tabWidget.addTab(self.tabTask2, "")
 
         self.verticalLayout.addWidget(self.tabWidget)
@@ -193,6 +255,12 @@ class Ui_MainWindow(object):
         self.checkEllipses.setText(QCoreApplication.translate("MainWindow", u"Detect Ellipses", None))
         self.btnApplyShapes.setText(QCoreApplication.translate("MainWindow", u"Apply Shape Detection", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabTask1), QCoreApplication.translate("MainWindow", u"Edge Detection", None))
+        self.groupBoxSnakeParams.setTitle(QCoreApplication.translate("MainWindow", u"Snake Parameters", None))
+        self.labelAlpha.setText(QCoreApplication.translate("MainWindow", u"Alpha:", None))
+        self.labelBeta.setText(QCoreApplication.translate("MainWindow", u"Beta:", None))
+        self.labelGamma.setText(QCoreApplication.translate("MainWindow", u"Gamma:", None))
+        self.btnApplySnake.setText(QCoreApplication.translate("MainWindow", u"Apply Snake", None))
+        self.btnClearContour.setText(QCoreApplication.translate("MainWindow", u"Clear Contour", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabTask2), QCoreApplication.translate("MainWindow", u"Active Contours", None))
         self.lblOriginal.setText(QCoreApplication.translate("MainWindow", u"Original Image", None))
         self.lblProcessed.setText(QCoreApplication.translate("MainWindow", u"Processed Image", None))

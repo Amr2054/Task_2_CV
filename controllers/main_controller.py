@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QFileDialog
 from PySide6.QtCore import Qt
 from utils.converters import cv_to_pixmap
 from controllers.canny_edge_detector_controller import Canny_EdgeDetector_Controller
+from controllers.greedy_snake_controller import GreedySnakeController
 
 class MainController:
     def __init__(self, ui, model, window):
@@ -11,6 +12,7 @@ class MainController:
         self.window = window
 
         self.canny_edge_detector = Canny_EdgeDetector_Controller(self.ui,self.model,self.display_processed_image)
+        self.greedy_snake_controller = GreedySnakeController(self.ui)
 
         self._connect_signals()
 
@@ -33,6 +35,10 @@ class MainController:
             # Clear the right label since we just loaded a new image
             self.ui.lblProcessed.clear()
             self.ui.lblProcessed.setText("Ready for processing.")
+
+            # Set image for snake controller (convert to grayscale)
+            gray_img = cv2.cvtColor(self.model.original_image, cv2.COLOR_BGR2GRAY)
+            self.greedy_snake_controller.set_image(gray_img, self.model.original_image)
 
             self.ui.statusbar.showMessage(f"Loaded: {file_path}", 3000)
 
