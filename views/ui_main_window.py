@@ -175,6 +175,21 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.btnClearContour)
 
+
+        self.btnCalcPerimeter = QPushButton(self.tabTask2)
+        self.btnCalcPerimeter.setObjectName(u"btnCalcPerimeter")
+        self.btnCalcPerimeter.setEnabled(False)
+ 
+        self.verticalLayout_4.addWidget(self.btnCalcPerimeter)
+ 
+        self.btnCalcArea = QPushButton(self.tabTask2)
+        self.btnCalcArea.setObjectName(u"btnCalcArea")
+        self.btnCalcArea.setEnabled(False)
+ 
+        self.verticalLayout_4.addWidget(self.btnCalcArea)
+
+
+
         self.verticalSpacerSnake = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_4.addItem(self.verticalSpacerSnake)
@@ -261,6 +276,18 @@ class Ui_MainWindow(object):
         self.labelGamma.setText(QCoreApplication.translate("MainWindow", u"Gamma:", None))
         self.btnApplySnake.setText(QCoreApplication.translate("MainWindow", u"Apply Snake", None))
         self.btnClearContour.setText(QCoreApplication.translate("MainWindow", u"Clear Contour", None))
+
+        self.btnCalcPerimeter.setText(QCoreApplication.translate("MainWindow", u"Calculate Perimeter", None))
+        self.btnCalcArea.setText(QCoreApplication.translate("MainWindow", u"Calculate Area", None))
+
+        self.lblResult = QLabel(self.tabTask2)
+        self.lblResult.setObjectName(u"lblResult")
+        self.lblResult.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.lblResult.setStyleSheet(u"border: 1px solid gray; padding: 4px; border-radius: 4px;")
+        self.lblResult.setText(u"")
+
+        self.verticalLayout_4.addWidget(self.lblResult)
+
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabTask2), QCoreApplication.translate("MainWindow", u"Active Contours", None))
         self.lblOriginal.setText(QCoreApplication.translate("MainWindow", u"Original Image", None))
         self.lblProcessed.setText(QCoreApplication.translate("MainWindow", u"Processed Image", None))

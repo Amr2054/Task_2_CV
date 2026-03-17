@@ -12,8 +12,7 @@ class MainController:
         self.window = window
 
         self.canny_edge_detector = Canny_EdgeDetector_Controller(self.ui,self.model,self.display_processed_image)
-        self.greedy_snake_controller = GreedySnakeController(self.ui)
-
+        self.greedy_snake_controller = GreedySnakeController(self.ui, self.window)
         self._connect_signals()
 
     def _connect_signals(self):

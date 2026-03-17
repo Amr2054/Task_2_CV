@@ -3,10 +3,12 @@ from PySide6.QtGui import QPixmap, QImage
 import cv2
 import numpy as np
 from core.greedy_snake import GreedyAlgorithmAuto, ImgEnrgPyramid, getAvgDist
+from controllers.perimeter_area_controller import PerimeterAreaController
 
 class GreedySnakeController:
-    def __init__(self, main_window):
+    def __init__(self, main_window, window):
         self.main_window = main_window
+        self.window = window
         self.initial_points = []
         self.points = []
         self.drawing = False
@@ -29,6 +31,8 @@ class GreedySnakeController:
         self.main_window.lblOriginal.mousePressEvent = self.mouse_press
         self.main_window.lblOriginal.mouseMoveEvent = self.mouse_move
         self.main_window.lblOriginal.mouseReleaseEvent = self.mouse_release
+
+        self.perimeter_area_controller = PerimeterAreaController(main_window, window)
 
         self.alpha = 0.1
         self.beta = 0.1
@@ -116,6 +120,7 @@ class GreedySnakeController:
         self.snake_thread = SnakeThread(points, self.gray_image, self.alpha, self.beta, self.gamma)
         self.snake_thread.update_signal.connect(self.update_snake_display)
         self.snake_thread.finished_signal.connect(self.snake_finished)
+        self.snake_thread.finished.connect(self.snake_thread.deleteLater)
         self.snake_thread.start()
 
     def update_snake_display(self, points):
@@ -126,10 +131,12 @@ class GreedySnakeController:
 
     def snake_finished(self, final_points):
         self.points = final_points.tolist()
+        self.perimeter_area_controller.set_final_points(final_points)
 
     def clear_contour(self):
         self.initial_points=[]
         self.points=[]
+        self.perimeter_area_controller.reset()
         self.processed_image=self.color_image.copy() if self.color_image is not None else None
         self.display_images()
 
