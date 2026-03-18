@@ -5,7 +5,7 @@ namespace py = pybind11;
 
 py::array_t<int> hough_line_transform(py::array_t<uint8_t> data, int voting_threshold);
 py::array_t<double> hough_ellipse_transform(pybind11::array_t<uint8_t> data, int voting_threshold = 60, double min_dist = 4.0);
-
+py::array_t<uint8_t> apply_canny_cpp(py::array_t<uint8_t> input_image, int min_val, int max_val);
 
 PYBIND11_MODULE(CppModule, m) {
     m.doc() = "My custom computer vision Python module";
@@ -22,4 +22,9 @@ PYBIND11_MODULE(CppModule, m) {
           py::arg("data"), 
           py::arg("voting_threshold") = 60,
           py::arg("min_dist") = 4.0);
+
+    m.def("apply_canny", &apply_canny_cpp, "Run Canny Edge Detection natively",
+          py::arg("input_image"), py::arg("min_val"), py::arg("max_val"));
+
 }
+
