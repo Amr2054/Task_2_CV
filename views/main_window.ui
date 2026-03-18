@@ -250,6 +250,51 @@
             </widget>
         </item>
 
+        <item>
+            <widget class="QPushButton" name="btnCalcChainCode">
+                <property name="text">
+                    <string>Calculate Chain Code</string>
+                </property>
+                <property name="enabled">
+                    <bool>false</bool>
+                </property>
+            </widget>
+        </item>
+
+        <item>
+            <widget class="QLabel" name="lblResult">
+                <property name="text">
+                    <string/>
+                </property>
+                <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignCenter</set>
+                </property>
+                <property name="styleSheet">
+                    <string notr="true">border: 1px solid gray; padding: 4px; border-radius: 4px;</string>
+                </property>
+            </widget>
+        </item>
+
+        <item>
+            <widget class="QTextEdit" name="txtChainCodeResult">
+                <property name="minimumSize">
+                    <size>
+                        <width>0</width>
+                        <height>130</height>
+                    </size>
+                </property>
+                <property name="readOnly">
+                    <bool>true</bool>
+                </property>
+                <property name="placeholderText">
+                    <string>Chain Code output will appear here...</string>
+                </property>
+                <property name="styleSheet">
+                    <string notr="true">border: 1px solid gray; padding: 4px; border-radius: 4px;</string>
+                </property>
+            </widget>
+        </item>
+
 
 
             <spacer name="verticalSpacerSnake">

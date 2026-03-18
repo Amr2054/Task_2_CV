@@ -20,6 +20,7 @@ from PySide6.QtWidgets import (QAbstractSpinBox, QApplication, QCheckBox, QFormL
     QFrame, QGroupBox, QHBoxLayout, QLabel,
     QMainWindow, QMenu, QMenuBar, QPushButton,
     QScrollArea, QSizePolicy, QSlider, QSpacerItem,
+    QTextEdit,
     QSpinBox, QStatusBar, QTabWidget, QVBoxLayout,
     QWidget)
 
@@ -188,6 +189,28 @@ class Ui_MainWindow(object):
  
         self.verticalLayout_4.addWidget(self.btnCalcArea)
 
+        self.btnCalcChainCode = QPushButton(self.tabTask2)
+        self.btnCalcChainCode.setObjectName(u"btnCalcChainCode")
+        self.btnCalcChainCode.setEnabled(False)
+
+        self.verticalLayout_4.addWidget(self.btnCalcChainCode)
+
+        self.lblResult = QLabel(self.tabTask2)
+        self.lblResult.setObjectName(u"lblResult")
+        self.lblResult.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.lblResult.setStyleSheet(u"border: 1px solid gray; padding: 4px; border-radius: 4px;")
+        self.lblResult.setText(u"")
+
+        self.verticalLayout_4.addWidget(self.lblResult)
+
+        self.txtChainCodeResult = QTextEdit(self.tabTask2)
+        self.txtChainCodeResult.setObjectName(u"txtChainCodeResult")
+        self.txtChainCodeResult.setReadOnly(True)
+        self.txtChainCodeResult.setMinimumHeight(130)
+        self.txtChainCodeResult.setStyleSheet(u"border: 1px solid gray; padding: 4px; border-radius: 4px;")
+
+        self.verticalLayout_4.addWidget(self.txtChainCodeResult)
+
 
 
         self.verticalSpacerSnake = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
@@ -279,14 +302,8 @@ class Ui_MainWindow(object):
 
         self.btnCalcPerimeter.setText(QCoreApplication.translate("MainWindow", u"Calculate Perimeter", None))
         self.btnCalcArea.setText(QCoreApplication.translate("MainWindow", u"Calculate Area", None))
-
-        self.lblResult = QLabel(self.tabTask2)
-        self.lblResult.setObjectName(u"lblResult")
-        self.lblResult.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.lblResult.setStyleSheet(u"border: 1px solid gray; padding: 4px; border-radius: 4px;")
-        self.lblResult.setText(u"")
-
-        self.verticalLayout_4.addWidget(self.lblResult)
+        self.btnCalcChainCode.setText(QCoreApplication.translate("MainWindow", u"Calculate Chain Code", None))
+        self.txtChainCodeResult.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Chain Code output will appear here...", None))
 
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabTask2), QCoreApplication.translate("MainWindow", u"Active Contours", None))
         self.lblOriginal.setText(QCoreApplication.translate("MainWindow", u"Original Image", None))

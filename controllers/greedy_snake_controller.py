@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 from core.greedy_snake import GreedyAlgorithmAuto, ImgEnrgPyramid, getAvgDist
 from controllers.perimeter_area_controller import PerimeterAreaController
+from controllers.chain_code_controller import ChainCodeController
 
 class GreedySnakeController:
     def __init__(self, main_window, window):
@@ -33,6 +34,7 @@ class GreedySnakeController:
         self.main_window.lblOriginal.mouseReleaseEvent = self.mouse_release
 
         self.perimeter_area_controller = PerimeterAreaController(main_window, window)
+        self.chain_code_controller = ChainCodeController(main_window)
 
         self.alpha = 0.1
         self.beta = 0.1
@@ -61,6 +63,8 @@ class GreedySnakeController:
         self.processed_image = color_img.copy()
         self.initial_points = []
         self.points = []
+        self.perimeter_area_controller.reset()
+        self.chain_code_controller.reset()
         self.display_images()
 
     def mouse_press(self, event):
@@ -103,7 +107,9 @@ class GreedySnakeController:
     def set_label_image(self,label,image):
         h,w,c = image.shape
         bytes_per_line = 3*w
-        q_img = QImage(image.data, w,h,bytes_per_line,QImage.Format_RGB888)
+        # q_img = QImage(image.data, w,h,bytes_per_line,QImage.Format_RGB888)
+        q_img = QImage(image.data, w,h,bytes_per_line,QImage.Format_RGB888).rgbSwapped()
+
         pixmap = QPixmap.fromImage(q_img)
         label.setPixmap(pixmap.scaled(label.size(),Qt.KeepAspectRatio))
         label.update()
@@ -132,11 +138,13 @@ class GreedySnakeController:
     def snake_finished(self, final_points):
         self.points = final_points.tolist()
         self.perimeter_area_controller.set_final_points(final_points)
+        self.chain_code_controller.set_final_points(final_points)
 
     def clear_contour(self):
         self.initial_points=[]
         self.points=[]
         self.perimeter_area_controller.reset()
+        self.chain_code_controller.reset()
         self.processed_image=self.color_image.copy() if self.color_image is not None else None
         self.display_images()
 
