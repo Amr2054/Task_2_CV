@@ -1,3 +1,12 @@
+import os
+import sys
+opencv_bin_path = r"C:\msys64\ucrt64\bin"
+if os.path.exists(opencv_bin_path):
+    if sys.version_info >= (3, 8):
+        os.add_dll_directory(opencv_bin_path)
+    else:
+        os.environ['PATH'] = opencv_bin_path + os.path.pathsep + os.environ['PATH']
+
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
 from views.ui_main_window import Ui_MainWindow
