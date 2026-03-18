@@ -7,7 +7,7 @@
 
 using namespace std;
 
-pybind11::array_t<double> hough_ellipse_transform(pybind11::array_t<uint8_t> data, int voting_threshold = 60, double min_dist = 4.0) {
+pybind11::array_t<double> hough_ellipse_transform(pybind11::array_t<uint8_t> data, int voting_threshold = 250, double min_dist = 2.0) {
     
     cv::Mat edges = numpy_to_cvmat(data);
     

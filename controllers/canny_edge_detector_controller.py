@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QMainWindow
 from core.canny_edge_detection import apply_canny
+from controllers.hough_controller import HoughController
 
 
 class Canny_EdgeDetector_Controller(QMainWindow):
@@ -7,7 +8,7 @@ class Canny_EdgeDetector_Controller(QMainWindow):
         self.ui = ui
         self.model = model
         self.display_callback = display_callback  # Function passed from MainController to update the canvas
-
+        self.hough_controller = HoughController(ui, model, display_callback)
         self._connect_signals()
 
     def _connect_signals(self):
@@ -27,9 +28,5 @@ class Canny_EdgeDetector_Controller(QMainWindow):
         # 3. Run Core logic (Your custom Canny NumPy implementation)
         edges = apply_canny(self.model.original_image, min_val, max_val)
 
-        # 4. Update the Model's state
         self.model.processed_image = edges
-
-        # 5. Trigger the display update in the MainController and update status
-        self.display_callback(edges)
-        self.ui.statusbar.showMessage("Canny Edge Detection applied.", 3000)
+        self.hough_controller.run_hough(edges)
