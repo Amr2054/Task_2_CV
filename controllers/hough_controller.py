@@ -3,7 +3,7 @@ import numpy as np
 from core.hough_circle_transform import hough_circle_transform
 from core import CppModule
 from utils.hough_drawing import draw_hough_lines, draw_hough_circles, draw_hough_ellipses
-
+from utils.gradient_direction import getAngle
 
 class HoughController:
     def __init__(self, ui, model, display_callback):
@@ -25,9 +25,7 @@ class HoughController:
             return
 
         gray = cv2.cvtColor(self.model.original_image, cv2.COLOR_BGR2GRAY)
-        Gx = cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=3)
-        Gy = cv2.Sobel(gray, cv2.CV_64F, 0, 1, ksize=3)
-        edge_direction = np.degrees(np.arctan2(Gy, Gx)) % 360
+        edge_direction = getAngle(gray)
 
         if self.ui.checkLines.isChecked():
             lines = CppModule.hough_line_transform(edges)

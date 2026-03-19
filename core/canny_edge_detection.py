@@ -208,16 +208,16 @@ def apply_canny(image, min_val, max_val):
     if image is None:
         return None
 
-    # 1. Ensure it's a 2D Grayscale image
+
     if len(image.shape) == 3:
         gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     else:
         gray_image = image
 
-    # 2. CRITICAL: Ensure the memory is contiguous so C++ can read it directly
+
     contiguous_gray = np.ascontiguousarray(gray_image, dtype=np.uint8)
 
-    # 3. Call the C++ function natively!
+
     edges = CppModule.apply_canny(contiguous_gray, min_val, max_val)
 
     return edges

@@ -74,9 +74,9 @@ py::array_t<uint8_t> apply_canny_cpp(py::array_t<uint8_t> input_image, int min_v
     };
 
     std::vector<float> sobelY = {
-         1.f,  2.f,  1.f,
+        -1.f, -2.f, -1.f,
          0.f,  0.f,  0.f,
-        -1.f, -2.f, -1.f
+         1.f,  2.f,  1.f
     };
 
     // 1. Gaussian Smoothing
@@ -110,13 +110,20 @@ py::array_t<uint8_t> apply_canny_cpp(py::array_t<uint8_t> input_image, int min_v
             float v = 0.0f;
 
             if ((theta >= 0 && theta < 22.5f) || (theta >= 157.5f && theta < 180.0f)) {
+                // 0 Degrees: Check Left and Right
                 if (val > gradient[r * width + (c + 1)] && val > gradient[r * width + (c - 1)]) v = val;
+
             } else if (theta >= 22.5f && theta < 67.5f) {
-                if (val > gradient[(r - 1) * width + (c + 1)] && val > gradient[(r + 1) * width + (c - 1)]) v = val;
-            } else if (theta >= 67.5f && theta < 112.5f) {
-                if (val > gradient[(r - 1) * width + c] && val > gradient[(r + 1) * width + c]) v = val;
-            } else if (theta >= 112.5f && theta < 157.5f) {
+                // 45 Degrees: Check Top-Left and Bottom-Right
                 if (val > gradient[(r - 1) * width + (c - 1)] && val > gradient[(r + 1) * width + (c + 1)]) v = val;
+
+            } else if (theta >= 67.5f && theta < 112.5f) {
+                // 90 Degrees: Check Top and Bottom
+                if (val > gradient[(r - 1) * width + c] && val > gradient[(r + 1) * width + c]) v = val;
+
+            } else if (theta >= 112.5f && theta < 157.5f) {
+                // 135 Degrees: Check Top-Right and Bottom-Left
+                if (val > gradient[(r - 1) * width + (c + 1)] && val > gradient[(r + 1) * width + (c - 1)]) v = val;
             }
             suppressed[idx] = v;
         }
