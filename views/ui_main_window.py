@@ -11,50 +11,53 @@
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
-    QCursor, QFont, QFontDatabase, QGradient,
-    QIcon, QImage, QKeySequence, QLinearGradient,
-    QPainter, QPalette, QPixmap, QRadialGradient,
-    QTransform)
-from PySide6.QtWidgets import (QAbstractSpinBox, QApplication, QCheckBox, QFormLayout,
-    QFrame, QGroupBox, QHBoxLayout, QLabel,
-    QMainWindow, QMenu, QMenuBar, QPushButton,
-    QScrollArea, QSizePolicy, QSlider, QSpacerItem,
-    QTextEdit,
-    QSpinBox, QStatusBar, QTabWidget, QVBoxLayout,
-    QWidget)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QFormLayout, QFrame,
+    QGroupBox, QHBoxLayout, QLabel, QMainWindow,
+    QPushButton, QScrollArea, QSizePolicy, QSlider,
+    QSpacerItem, QSpinBox, QStatusBar, QTabWidget,
+    QTextEdit, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(950, 685)
-        self.actionOpen_Image = QAction(MainWindow)
-        self.actionOpen_Image.setObjectName(u"actionOpen_Image")
-        self.actionSave_Result = QAction(MainWindow)
-        self.actionSave_Result.setObjectName(u"actionSave_Result")
-        self.actionExit = QAction(MainWindow)
-        self.actionExit.setObjectName(u"actionExit")
+        MainWindow.resize(1100, 750)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
+        self.horizontalLayout.setSpacing(15)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(15, 15, 15, 15)
         self.sidebarFrame = QFrame(self.centralwidget)
         self.sidebarFrame.setObjectName(u"sidebarFrame")
-        self.sidebarFrame.setMaximumSize(QSize(320, 16777215))
-        self.sidebarFrame.setFrameShape(QFrame.Shape.StyledPanel)
+        self.sidebarFrame.setMaximumSize(QSize(340, 16777215))
+        self.sidebarFrame.setFrameShape(QFrame.Shape.NoFrame)
         self.verticalLayout = QVBoxLayout(self.sidebarFrame)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName(u"verticalLayout")
+        self.btnOpenImage = QPushButton(self.sidebarFrame)
+        self.btnOpenImage.setObjectName(u"btnOpenImage")
+        self.btnOpenImage.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+
+        self.verticalLayout.addWidget(self.btnOpenImage)
+
         self.tabWidget = QTabWidget(self.sidebarFrame)
         self.tabWidget.setObjectName(u"tabWidget")
         self.tabTask1 = QWidget()
         self.tabTask1.setObjectName(u"tabTask1")
         self.verticalLayout_2 = QVBoxLayout(self.tabTask1)
+        self.verticalLayout_2.setSpacing(12)
+        self.verticalLayout_2.setContentsMargins(15, 15, 15, 15)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.groupBoxCanny = QGroupBox(self.tabTask1)
         self.groupBoxCanny.setObjectName(u"groupBoxCanny")
         self.formLayout = QFormLayout(self.groupBoxCanny)
         self.formLayout.setObjectName(u"formLayout")
+        self.formLayout.setVerticalSpacing(10)
         self.label = QLabel(self.groupBoxCanny)
         self.label.setObjectName(u"label")
 
@@ -75,7 +78,6 @@ class Ui_MainWindow(object):
         self.spinCannyMax = QSpinBox(self.groupBoxCanny)
         self.spinCannyMax.setObjectName(u"spinCannyMax")
         self.spinCannyMax.setMaximum(255)
-        self.spinCannyMax.setStepType(QAbstractSpinBox.StepType.DefaultStepType)
         self.spinCannyMax.setValue(200)
 
         self.formLayout.setWidget(1, QFormLayout.ItemRole.FieldRole, self.spinCannyMax)
@@ -86,6 +88,7 @@ class Ui_MainWindow(object):
         self.groupBoxHough = QGroupBox(self.tabTask1)
         self.groupBoxHough.setObjectName(u"groupBoxHough")
         self.verticalLayout_3 = QVBoxLayout(self.groupBoxHough)
+        self.verticalLayout_3.setSpacing(10)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.checkLines = QCheckBox(self.groupBoxHough)
         self.checkLines.setObjectName(u"checkLines")
@@ -107,6 +110,7 @@ class Ui_MainWindow(object):
 
         self.btnApplyShapes = QPushButton(self.tabTask1)
         self.btnApplyShapes.setObjectName(u"btnApplyShapes")
+        self.btnApplyShapes.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.verticalLayout_2.addWidget(self.btnApplyShapes)
 
@@ -118,6 +122,8 @@ class Ui_MainWindow(object):
         self.tabTask2 = QWidget()
         self.tabTask2.setObjectName(u"tabTask2")
         self.verticalLayout_4 = QVBoxLayout(self.tabTask2)
+        self.verticalLayout_4.setSpacing(10)
+        self.verticalLayout_4.setContentsMargins(15, 15, 15, 15)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.groupBoxSnakeParams = QGroupBox(self.tabTask2)
         self.groupBoxSnakeParams.setObjectName(u"groupBoxSnakeParams")
@@ -130,9 +136,10 @@ class Ui_MainWindow(object):
 
         self.sliderAlpha = QSlider(self.groupBoxSnakeParams)
         self.sliderAlpha.setObjectName(u"sliderAlpha")
-        self.sliderAlpha.setOrientation(Qt.Orientation.Horizontal)
+        self.sliderAlpha.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.sliderAlpha.setMaximum(200)
         self.sliderAlpha.setValue(10)
+        self.sliderAlpha.setOrientation(Qt.Orientation.Horizontal)
 
         self.formLayoutSnake.setWidget(0, QFormLayout.ItemRole.FieldRole, self.sliderAlpha)
 
@@ -143,9 +150,10 @@ class Ui_MainWindow(object):
 
         self.sliderBeta = QSlider(self.groupBoxSnakeParams)
         self.sliderBeta.setObjectName(u"sliderBeta")
-        self.sliderBeta.setOrientation(Qt.Orientation.Horizontal)
+        self.sliderBeta.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.sliderBeta.setMaximum(200)
         self.sliderBeta.setValue(10)
+        self.sliderBeta.setOrientation(Qt.Orientation.Horizontal)
 
         self.formLayoutSnake.setWidget(1, QFormLayout.ItemRole.FieldRole, self.sliderBeta)
 
@@ -156,10 +164,10 @@ class Ui_MainWindow(object):
 
         self.sliderGamma = QSlider(self.groupBoxSnakeParams)
         self.sliderGamma.setObjectName(u"sliderGamma")
-        self.sliderGamma.setOrientation(Qt.Orientation.Horizontal)
+        self.sliderGamma.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.sliderGamma.setMaximum(200)
-        self.sliderGamma.setMinimum(0)
         self.sliderGamma.setValue(100)
+        self.sliderGamma.setOrientation(Qt.Orientation.Horizontal)
 
         self.formLayoutSnake.setWidget(2, QFormLayout.ItemRole.FieldRole, self.sliderGamma)
 
@@ -168,52 +176,52 @@ class Ui_MainWindow(object):
 
         self.btnApplySnake = QPushButton(self.tabTask2)
         self.btnApplySnake.setObjectName(u"btnApplySnake")
+        self.btnApplySnake.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.verticalLayout_4.addWidget(self.btnApplySnake)
 
         self.btnClearContour = QPushButton(self.tabTask2)
         self.btnClearContour.setObjectName(u"btnClearContour")
+        self.btnClearContour.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.verticalLayout_4.addWidget(self.btnClearContour)
-
 
         self.btnCalcPerimeter = QPushButton(self.tabTask2)
         self.btnCalcPerimeter.setObjectName(u"btnCalcPerimeter")
         self.btnCalcPerimeter.setEnabled(False)
- 
+        self.btnCalcPerimeter.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+
         self.verticalLayout_4.addWidget(self.btnCalcPerimeter)
- 
+
         self.btnCalcArea = QPushButton(self.tabTask2)
         self.btnCalcArea.setObjectName(u"btnCalcArea")
         self.btnCalcArea.setEnabled(False)
- 
+        self.btnCalcArea.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+
         self.verticalLayout_4.addWidget(self.btnCalcArea)
 
         self.btnCalcChainCode = QPushButton(self.tabTask2)
         self.btnCalcChainCode.setObjectName(u"btnCalcChainCode")
         self.btnCalcChainCode.setEnabled(False)
+        self.btnCalcChainCode.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.verticalLayout_4.addWidget(self.btnCalcChainCode)
 
         self.lblResult = QLabel(self.tabTask2)
         self.lblResult.setObjectName(u"lblResult")
+        self.lblResult.setMinimumSize(QSize(0, 30))
         self.lblResult.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.lblResult.setStyleSheet(u"border: 1px solid gray; padding: 4px; border-radius: 4px;")
-        self.lblResult.setText(u"")
 
         self.verticalLayout_4.addWidget(self.lblResult)
 
         self.txtChainCodeResult = QTextEdit(self.tabTask2)
         self.txtChainCodeResult.setObjectName(u"txtChainCodeResult")
+        self.txtChainCodeResult.setMinimumSize(QSize(0, 100))
         self.txtChainCodeResult.setReadOnly(True)
-        self.txtChainCodeResult.setMinimumHeight(130)
-        self.txtChainCodeResult.setStyleSheet(u"border: 1px solid gray; padding: 4px; border-radius: 4px;")
 
         self.verticalLayout_4.addWidget(self.txtChainCodeResult)
 
-
-
-        self.verticalSpacerSnake = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.verticalSpacerSnake = QSpacerItem(20, 10, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_4.addItem(self.verticalSpacerSnake)
 
@@ -229,17 +237,21 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 604, 619))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 713, 695))
         self.horizontalLayout_2 = QHBoxLayout(self.scrollAreaWidgetContents)
+        self.horizontalLayout_2.setSpacing(20)
+        self.horizontalLayout_2.setContentsMargins(20, 20, 20, 20)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.lblOriginal = QLabel(self.scrollAreaWidgetContents)
         self.lblOriginal.setObjectName(u"lblOriginal")
+        self.lblOriginal.setMinimumSize(QSize(300, 300))
         self.lblOriginal.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.lblOriginal)
 
         self.lblProcessed = QLabel(self.scrollAreaWidgetContents)
         self.lblProcessed.setObjectName(u"lblProcessed")
+        self.lblProcessed.setMinimumSize(QSize(300, 300))
         self.lblProcessed.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.lblProcessed)
@@ -249,21 +261,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.scrollArea)
 
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QMenuBar(MainWindow)
-        self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 950, 23))
-        self.menuFile = QMenu(self.menubar)
-        self.menuFile.setObjectName(u"menuFile")
-        MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
-        self.menubar.addAction(self.menuFile.menuAction())
-        self.menuFile.addAction(self.actionOpen_Image)
-        self.menuFile.addAction(self.actionSave_Result)
-        self.menuFile.addSeparator()
-        self.menuFile.addAction(self.actionExit)
 
         self.retranslateUi(MainWindow)
 
@@ -275,15 +275,57 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"CV Assignment - Shape & Contour Detector", None))
-        self.actionOpen_Image.setText(QCoreApplication.translate("MainWindow", u"Open Image", None))
-#if QT_CONFIG(shortcut)
-        self.actionOpen_Image.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+O", None))
-#endif // QT_CONFIG(shortcut)
-        self.actionSave_Result.setText(QCoreApplication.translate("MainWindow", u"Save Result", None))
-#if QT_CONFIG(shortcut)
-        self.actionSave_Result.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+S", None))
-#endif // QT_CONFIG(shortcut)
-        self.actionExit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
+        MainWindow.setStyleSheet(QCoreApplication.translate("MainWindow", u"\n"
+"    /* Global Styles */\n"
+"    QMainWindow { background-color: #2b2b2b; color: #f0f0f0; }\n"
+"    QWidget { font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 10pt; }\n"
+"    QLabel { color: #f0f0f0; }\n"
+"\n"
+"    /* Group Boxes */\n"
+"    QGroupBox { font-weight: bold; border: 1px solid #555555; border-radius: 6px; margin-top: 15px; padding-top: 10px; }\n"
+"    QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 5px; color: #4DA8DA; }\n"
+"\n"
+"    /* Standard Buttons */\n"
+"    QPushButton { background-color: #4DA8DA; color: white; border-radius: 4px; padding: 8px; font-weight: bold; }\n"
+"    QPushButton:hover { background-color: #3b8bb8; }\n"
+"    QPushButton:pressed { background-color: #2a6a8c; }\n"
+"    QPushButton:disabled { background-color: #444444; color: #777777; }\n"
+"\n"
+"    /* The NEW Giant Upload Button */\n"
+"    #btnOpenImage {\n"
+"    background-color: #2E8B57; /* SeaGreen Accent */\n"
+"    border: 2px solid #3CB371;\n"
+"    color: white;\n"
+"    font-si"
+                        "ze: 13pt;\n"
+"    font-weight: bold;\n"
+"    padding: 15px;\n"
+"    border-radius: 8px;\n"
+"    margin-bottom: 5px;\n"
+"    }\n"
+"    #btnOpenImage:hover { background-color: #3CB371; }\n"
+"    #btnOpenImage:pressed { background-color: #228B22; border: 2px solid #228B22; }\n"
+"\n"
+"    /* Tabs */\n"
+"    QTabWidget::pane { border: 1px solid #555555; border-radius: 4px; top: -1px; background-color: #333333; }\n"
+"    QTabBar::tab { background: #222222; color: #aaaaaa; padding: 8px 16px; border: 1px solid #555555; border-bottom: none; border-top-left-radius: 4px; border-top-right-radius: 4px; margin-right: 2px; }\n"
+"    QTabBar::tab:selected { background: #333333; color: #4DA8DA; font-weight: bold; }\n"
+"    QTabBar::tab:hover:!selected { background: #2a2a2a; color: #ffffff; }\n"
+"\n"
+"    /* Inputs */\n"
+"    QSpinBox, QSlider { background-color: #1e1e1e; color: white; border: 1px solid #555555; border-radius: 3px; padding: 3px; }\n"
+"    QCheckBox { color: #f0f0f0; spacing: 8px; }\n"
+"    QCheckBox::indicator "
+                        "{ width: 16px; height: 16px; border-radius: 3px; border: 1px solid #555555; background: #1e1e1e; }\n"
+"    QCheckBox::indicator:checked { background: #4DA8DA; }\n"
+"\n"
+"    /* Text Outputs */\n"
+"    QTextEdit { background-color: #1e1e1e; color: #4DA8DA; border: 1px solid #555555; border-radius: 4px; padding: 4px; }\n"
+"\n"
+"    /* Scroll Area / Image Canvas */\n"
+"    QScrollArea { background-color: #1e1e1e; border: 1px solid #111111; }\n"
+"   ", None))
+        self.btnOpenImage.setText(QCoreApplication.translate("MainWindow", u"\U0001f4c1 Upload Image", None))
         self.groupBoxCanny.setTitle(QCoreApplication.translate("MainWindow", u"Canny Edge Detection", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Min Val:", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Max Val:", None))
@@ -299,15 +341,16 @@ class Ui_MainWindow(object):
         self.labelGamma.setText(QCoreApplication.translate("MainWindow", u"Gamma:", None))
         self.btnApplySnake.setText(QCoreApplication.translate("MainWindow", u"Apply Snake", None))
         self.btnClearContour.setText(QCoreApplication.translate("MainWindow", u"Clear Contour", None))
-
         self.btnCalcPerimeter.setText(QCoreApplication.translate("MainWindow", u"Calculate Perimeter", None))
         self.btnCalcArea.setText(QCoreApplication.translate("MainWindow", u"Calculate Area", None))
         self.btnCalcChainCode.setText(QCoreApplication.translate("MainWindow", u"Calculate Chain Code", None))
+        self.lblResult.setStyleSheet(QCoreApplication.translate("MainWindow", u"background-color: #1e1e1e; border: 1px solid #555555; border-radius: 4px; font-weight: bold; color: #4DA8DA;", None))
+        self.lblResult.setText(QCoreApplication.translate("MainWindow", u"Ready", None))
         self.txtChainCodeResult.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Chain Code output will appear here...", None))
-
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabTask2), QCoreApplication.translate("MainWindow", u"Active Contours", None))
+        self.lblOriginal.setStyleSheet(QCoreApplication.translate("MainWindow", u"background-color: #1a1a1a; border: 2px dashed #444444; border-radius: 8px; color: #666666;", None))
         self.lblOriginal.setText(QCoreApplication.translate("MainWindow", u"Original Image", None))
+        self.lblProcessed.setStyleSheet(QCoreApplication.translate("MainWindow", u"background-color: #1a1a1a; border: 2px dashed #444444; border-radius: 8px; color: #666666;", None))
         self.lblProcessed.setText(QCoreApplication.translate("MainWindow", u"Processed Image", None))
-        self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
     # retranslateUi
 

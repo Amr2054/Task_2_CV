@@ -17,7 +17,7 @@ class MainController:
 
     def _connect_signals(self):
         # Connect File -> Open
-        self.ui.actionOpen_Image.triggered.connect(self.load_image)
+        self.ui.btnOpenImage.clicked.connect(self.load_image)
 
     def load_image(self):
         file_path, _ = QFileDialog.getOpenFileName(
