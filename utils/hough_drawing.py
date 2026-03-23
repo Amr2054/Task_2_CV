@@ -15,6 +15,8 @@ def draw_hough_lines(image, lines):
         return output
 
     h, w = output.shape[:2]
+    # Calculate the image diagonal to ensure the drawn lines cover the whole image
+    diag_len = int(np.hypot(h, w)) 
 
     for i in range(len(lines)):
         r = lines[i, 0]
@@ -24,18 +26,19 @@ def draw_hough_lines(image, lines):
         cos_t = np.cos(theta_rad)
         sin_t = np.sin(theta_rad)
 
-        # Convert (r, theta) to two endpoints for drawing
-        if sin_t != 0:
-            # y = (r - x*cos_t) / sin_t
-            x0, x1 = 0, w - 1
-            y0 = int(round((r - x0 * cos_t) / sin_t))
-            y1 = int(round((r - x1 * cos_t) / sin_t))
-        else:
-            # Vertical line: x = r
-            x0 = x1 = int(round(r))
-            y0, y1 = 0, h - 1
+        # 1. Find the base point (x0, y0) on the line closest to the origin
+        x0 = r * cos_t
+        y0 = r * sin_t
 
-        cv2.line(output, (x0, y0), (x1, y1), (0, 255, 0), 1)
+        # 2. Extend the line outward from the base point.
+        # The direction vector of the line is (-sin_t, cos_t)
+        pt1_x = int(x0 + diag_len * (-sin_t))
+        pt1_y = int(y0 + diag_len * (cos_t))
+        
+        pt2_x = int(x0 - diag_len * (-sin_t))
+        pt2_y = int(y0 - diag_len * (cos_t))
+
+        cv2.line(output, (pt1_x, pt1_y), (pt2_x, pt2_y), (0, 255, 0), 1)
 
     return output
 
