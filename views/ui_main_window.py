@@ -277,53 +277,56 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"CV Assignment - Shape & Contour Detector", None))
         MainWindow.setStyleSheet(QCoreApplication.translate("MainWindow", u"\n"
 "    /* Global Styles */\n"
-"    QMainWindow { background-color: #2b2b2b; color: #f0f0f0; }\n"
-"    QWidget { font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 10pt; }\n"
-"    QLabel { color: #f0f0f0; }\n"
+"    QMainWindow { background-color: #0d0d1a; color: #e0e0ff; }\n"
+"    QWidget { font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 10pt; background-color: #0d0d1a; color: #e0e0ff; }\n"
+"    QLabel { color: #e0e0ff; }\n"
 "\n"
 "    /* Group Boxes */\n"
-"    QGroupBox { font-weight: bold; border: 1px solid #555555; border-radius: 6px; margin-top: 15px; padding-top: 10px; }\n"
-"    QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 5px; color: #4DA8DA; }\n"
+"    QGroupBox { font-weight: bold; border: 1px solid #4a4aff; border-radius: 8px; margin-top: 15px; padding-top: 10px; background-color: #11112a; }\n"
+"    QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 2px 8px; color: #ffffff; background-color: #7b68ee; border-radius: 4px; }\n"
 "\n"
 "    /* Standard Buttons */\n"
-"    QPushButton { background-color: #4DA8DA; color: white; border-radius: 4px; padding: 8px; font-weight: bold; }\n"
-"    QPushButton:hover { background-color: #3b8bb8; }\n"
-"    QPushButton:pressed { background-color: #2a6a8c; }\n"
-"    QPushButton:disabled { background-color: #444444; color: #777777; }\n"
+"    QPushButton { background-color: #1a1a3e; color: #c0c0ff; border: 1px solid #4a4aff; border-radius: 6px; padding: 8px; font-weight: bold; }\n"
+"    QPushButton:hover { background-color: #2a2a5e; color: #ffffff; border: 1px solid #7b68ee; }\n"
+"    QPushButton:pressed { background-color: #0d0d2e; }\n"
+"    QPushButton:disabled { background-color: #1a1a2e; color: #444466; border: 1px solid #2a2a4e; }\n"
 "\n"
-"    /* The NEW Giant Upload Button */\n"
+"    /* Upload Button */\n"
 "    #btnOpenImage {\n"
-"    background-color: #2E8B57; /* SeaGreen Accent */\n"
-"    border: 2px solid #3CB371;\n"
+"    background-color: #7b5ea7;\n"
+"    border: 2px solid #9b7fd4;\n"
 "    color: white;\n"
-"    font-si"
-                        "ze: 13pt;\n"
+"    font-size: 13pt;\n"
 "    font-weight: bold;\n"
 "    padding: 15px;\n"
 "    border-radius: 8px;\n"
 "    margin-bottom: 5px;\n"
 "    }\n"
-"    #btnOpenImage:hover { background-color: #3CB371; }\n"
-"    #btnOpenImage:pressed { background-color: #228B22; border: 2px solid #228B22; }\n"
+"    #btnOpenImage:hover { background-color: #9b7fd4; }\n"
+"    #btnOpenImage:pressed { background-color: #5a3d8a; border: 2px solid #5a3d8a; }\n"
 "\n"
 "    /* Tabs */\n"
-"    QTabWidget::pane { border: 1px solid #555555; border-radius: 4px; top: -1px; background-color: #333333; }\n"
-"    QTabBar::tab { background: #222222; color: #aaaaaa; padding: 8px 16px; border: 1px solid #555555; border-bottom: none; border-top-left-radius: 4px; border-top-right-radius: 4px; margin-right: 2px; }\n"
-"    QTabBar::tab:selected { background: #333333; color: #4DA8DA; font-weight: bold; }\n"
-"    QTabBar::tab:hover:!selected { background: #2a2a2a; color: #ffffff; }\n"
+"    QTabWidget::pane { border: 1px solid #4a4aff; border-radius: 6px; top: -1px; background-color: #11112a; }\n"
+"    QTabBar::tab { background: #0d0d1a; color: #8888cc; padding: 8px 16px; border: 1px solid #4a4aff; border-bottom: none; border-top-left-radius: 6px; border-top-right-radius: 6px; margin-right: 2px; }\n"
+"    QTabBar::tab:selected { background: #11112a; color: #ffffff; font-weight: bold; border-bottom: none; }\n"
+"    QTabBar::tab:hover:!selected { background: #1a1a3e; color: #ffffff; }\n"
 "\n"
 "    /* Inputs */\n"
-"    QSpinBox, QSlider { background-color: #1e1e1e; color: white; border: 1px solid #555555; border-radius: 3px; padding: 3px; }\n"
-"    QCheckBox { color: #f0f0f0; spacing: 8px; }\n"
-"    QCheckBox::indicator "
-                        "{ width: 16px; height: 16px; border-radius: 3px; border: 1px solid #555555; background: #1e1e1e; }\n"
-"    QCheckBox::indicator:checked { background: #4DA8DA; }\n"
+"    QSpinBox { background-color: #11112a; color: #e0e0ff; border: 1px solid #4a4aff; border-radius: 4px; padding: 3px; }\n"
+"    QSlider::groove:horizontal { height: 4px; background: #2a2a5e; border-radius: 2px; }\n"
+"    QSlider::handle:horizontal { background: #7b68ee; border: 1px solid #9b7fd4; width: 14px; height: 14px; margin: -5px 0; border-radius: 7px; }\n"
+"    QSlider::sub-page:horizontal { background: #7b68ee; border-radius: 2px; }\n"
+"    QCheckBox { color: #e0e0ff; spacing: 8px; }\n"
+"    QCheckBox::indicator { width: 16px; height: 16px; border-radius: 3px; border: 1px solid #4a4aff; background: #11112a; }\n"
+"    QCheckBox::indicator:checked { background: #7b68ee; border: 1px solid #9b7fd4; }\n"
 "\n"
 "    /* Text Outputs */\n"
-"    QTextEdit { background-color: #1e1e1e; color: #4DA8DA; border: 1px solid #555555; border-radius: 4px; padding: 4px; }\n"
+"    QTextEdit { background-color: #11112a; color: #a0a0ff; border: 1px solid #4a4aff; border-radius: 4px; padding: 4px; }\n"
 "\n"
 "    /* Scroll Area / Image Canvas */\n"
-"    QScrollArea { background-color: #1e1e1e; border: 1px solid #111111; }\n"
+"    QScrollArea { background-color: #0d0d1a; border: 1px solid #4a4aff; border-radius: 8px; }\n"
+"    QScrollBar:vertical { background: #11112a; width: 10px; border-radius: 5px; }\n"
+"    QScrollBar::handle:vertical { background: #4a4aff; border-radius: 5px; }\n"
 "   ", None))
         self.btnOpenImage.setText(QCoreApplication.translate("MainWindow", u"\U0001f4c1 Upload Image", None))
         self.groupBoxCanny.setTitle(QCoreApplication.translate("MainWindow", u"Canny Edge Detection", None))
@@ -344,13 +347,12 @@ class Ui_MainWindow(object):
         self.btnCalcPerimeter.setText(QCoreApplication.translate("MainWindow", u"Calculate Perimeter", None))
         self.btnCalcArea.setText(QCoreApplication.translate("MainWindow", u"Calculate Area", None))
         self.btnCalcChainCode.setText(QCoreApplication.translate("MainWindow", u"Calculate Chain Code", None))
-        self.lblResult.setStyleSheet(QCoreApplication.translate("MainWindow", u"background-color: #1e1e1e; border: 1px solid #555555; border-radius: 4px; font-weight: bold; color: #4DA8DA;", None))
+        self.lblResult.setStyleSheet(QCoreApplication.translate("MainWindow", u"background-color: #11112a; border: 1px solid #4a4aff; border-radius: 4px; font-weight: bold; color: #a0a0ff;", None))
         self.lblResult.setText(QCoreApplication.translate("MainWindow", u"Ready", None))
         self.txtChainCodeResult.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Chain Code output will appear here...", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabTask2), QCoreApplication.translate("MainWindow", u"Active Contours", None))
-        self.lblOriginal.setStyleSheet(QCoreApplication.translate("MainWindow", u"background-color: #1a1a1a; border: 2px dashed #444444; border-radius: 8px; color: #666666;", None))
+        self.lblOriginal.setStyleSheet(QCoreApplication.translate("MainWindow", u"background-color: #0a0a1f; border: 2px solid #4a4aff; border-radius: 10px; color: #5555aa;", None))
         self.lblOriginal.setText(QCoreApplication.translate("MainWindow", u"Original Image", None))
-        self.lblProcessed.setStyleSheet(QCoreApplication.translate("MainWindow", u"background-color: #1a1a1a; border: 2px dashed #444444; border-radius: 8px; color: #666666;", None))
+        self.lblProcessed.setStyleSheet(QCoreApplication.translate("MainWindow", u"background-color: #0a0a1f; border: 2px solid #4a4aff; border-radius: 10px; color: #5555aa;", None))
         self.lblProcessed.setText(QCoreApplication.translate("MainWindow", u"Processed Image", None))
     # retranslateUi
-
