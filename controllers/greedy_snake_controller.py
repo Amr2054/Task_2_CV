@@ -2,7 +2,7 @@ from PySide6.QtCore import QThread, Signal, Qt
 from PySide6.QtGui import QPixmap, QImage
 import cv2
 import numpy as np
-from core.greedy_snake import GreedyAlgorithmAuto, ImgEnrgPyramid, getAvgDist
+from core.greedy_snake import GreedyAlgorithmAuto, ImgEnrgPyramid, getAvgDist, remove_duplicate_contour_points
 from controllers.perimeter_area_controller import PerimeterAreaController
 from controllers.chain_code_controller import ChainCodeController
 
@@ -122,7 +122,15 @@ class GreedySnakeController:
     def apply_snake(self):
         if len(self.initial_points)<3 or self.gray_image is None:
             return
-        points = np.array(self.initial_points, dtype=np.float32)
+
+        cleaned_input = remove_duplicate_contour_points(np.array(self.initial_points, dtype=np.float32))
+        if len(cleaned_input) < 3:
+            return
+
+        self.initial_points = cleaned_input.tolist()
+        self.display_images()
+
+        points = cleaned_input
         self.snake_thread = SnakeThread(points, self.gray_image, self.alpha, self.beta, self.gamma)
         self.snake_thread.update_signal.connect(self.update_snake_display)
         self.snake_thread.finished_signal.connect(self.snake_finished)
@@ -136,9 +144,16 @@ class GreedySnakeController:
         self.set_label_image(self.main_window.lblProcessed,self.processed_image)
 
     def snake_finished(self, final_points):
-        self.points = final_points.tolist()
-        self.perimeter_area_controller.set_final_points(final_points)
-        self.chain_code_controller.set_final_points(final_points)
+        cleaned_points = remove_duplicate_contour_points(final_points)
+        self.points = cleaned_points.tolist()
+
+        self.processed_image = self.color_image.copy()
+        pts = np.array(cleaned_points, dtype=np.int32)
+        cv2.polylines(self.processed_image, [pts], isClosed=True, color=(255, 0, 0), thickness=2)
+        self.set_label_image(self.main_window.lblProcessed, self.processed_image)
+
+        self.perimeter_area_controller.set_final_points(cleaned_points)
+        self.chain_code_controller.set_final_points(cleaned_points)
 
     def clear_contour(self):
         self.initial_points=[]

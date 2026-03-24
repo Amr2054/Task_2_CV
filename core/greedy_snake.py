@@ -72,3 +72,38 @@ def GreedyAlgorithmAuto(points, img, alpha, beta, gamma, step=1, movement_thresh
             break
 
     return points
+
+
+
+
+
+
+
+
+
+
+
+# =============================
+#REMOVE DUPLICATED POINTS
+def remove_duplicate_contour_points(contour):
+    """Remove only points that map to the same pixel (after rounding to int)."""
+    contour = np.asarray(contour, dtype=np.float32)
+    if contour.ndim != 2 or contour.shape[1] != 2 or len(contour) == 0:
+        return contour
+
+    cleaned = [contour[0]]
+    seen = {(int(round(contour[0, 0])), int(round(contour[0, 1])))}
+
+    for p in contour[1:]:
+        key = (int(round(p[0])), int(round(p[1])))
+        if key not in seen:
+            cleaned.append(p)
+            seen.add(key)
+
+    cleaned = np.asarray(cleaned, dtype=np.float32)
+    if len(cleaned) > 1 and np.array_equal(cleaned[0], cleaned[-1]):
+        cleaned = cleaned[:-1]
+
+    return cleaned
+
+

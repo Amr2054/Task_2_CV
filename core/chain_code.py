@@ -1,90 +1,59 @@
 import numpy as np
+import math
 
 def get_chain_code(contour):
-    step_size = 3.5  # Adjustable step size for interpolation
-    chain_code = ""
+    """
+    8-direction Chain Code 
+    """
+    chain_code = []
     contour = np.asarray(contour).astype(float)
 
     if contour.ndim != 2 or contour.shape[1] != 2 or len(contour) < 2:
         return chain_code
 
-    # 8-direction mapping
-    direction_map = {
-        (1, 0): '0',    # East
-        (1, -1): '1',   # North-East
-        (0, -1): '2',   # North
-        (-1, -1): '3',  # North-West
-        (-1, 0): '4',   # West
-        (-1, 1): '5',   # South-West
-        (0, 1): '6',    # South
-        (1, 1): '7'     # South-East
-    }
+    n = len(contour)
 
-    for i in range(len(contour)):
+    for i in range(n):
         x1, y1 = contour[i]
-        x2, y2 = contour[(i + 1) % len(contour)]  # circular
+        x2, y2 = contour[(i + 1) % n]  # circular
 
         dx = x2 - x1
         dy = y2 - y1
 
-        # Determine the number of steps based on adjustable step_size
-        steps = max(int(max(abs(dx), abs(dy)) // step_size), 1)
+        # Round for exact pixel movements
+        dx_r = int(round(dx))
+        dy_r = int(round(dy))
 
-        for s in range(1, steps + 1):
-            # Interpolate intermediate point
-            curr_x = x1 + dx * s / steps
-            curr_y = y1 + dy * s / steps
+        # Direct mapping (ideal case)
+        if dx_r == 1 and dy_r == 0:
+            code = 0
+        elif dx_r == 1 and dy_r == 1:
+            code = 1
+        elif dx_r == 0 and dy_r == 1:
+            code = 2
+        elif dx_r == -1 and dy_r == 1:
+            code = 3
+        elif dx_r == -1 and dy_r == 0:
+            code = 4
+        elif dx_r == -1 and dy_r == -1:
+            code = 5
+        elif dx_r == 0 and dy_r == -1:
+            code = 6
+        elif dx_r == 1 and dy_r == -1:
+            code = 7
 
-            # Calculate unit direction from previous point
-            prev_x = x1 if s == 1 else x1 + dx * (s-1) / steps
-            prev_y = y1 if s == 1 else y1 + dy * (s-1) / steps
+        else:
+            # Fallback: use angle
+            angle = math.atan2(dy, dx)  # [-pi, pi]
+            code = int(round(4 * angle / math.pi)) % 8
 
-            dir_x = int(np.sign(curr_x - prev_x))
-            dir_y = int(np.sign(curr_y - prev_y))
+        chain_code.append(code)
 
-            if (dir_x, dir_y) != (0, 0):
-                code = direction_map.get((dir_x, dir_y))
-                if code is not None:
-                    chain_code += code
-
-    # Format into groups of 6 digits
-    formatted_chain_code = " ".join(chain_code[i:i+6] for i in range(0, len(chain_code), 6))
-    return formatted_chain_code
+    return chain_code
 
 
 
 
-# def get_chain_code(contour):
-#     chain_code = ""
-#     contour = np.asarray(contour).astype(float)
 
-#     if contour.ndim != 2 or contour.shape[1] != 2 or len(contour) < 2:
-#         return chain_code
 
-#     # 8-direction mapping
-#     direction_map = {
-#         (1, 0): '0',    # East
-#         (1, -1): '1',   # North-East
-#         (0, -1): '2',   # North
-#         (-1, -1): '3',  # North-West
-#         (-1, 0): '4',   # West
-#         (-1, 1): '5',   # South-West
-#         (0, 1): '6',    # South
-#         (1, 1): '7'     # South-East
-#     }
 
-#     for i in range(len(contour)):
-#         x1, y1 = contour[i]
-#         x2, y2 = contour[(i + 1) % len(contour)]  # circular
-
-#         dir_x = int(np.sign(x2 - x1))
-#         dir_y = int(np.sign(y2 - y1))
-
-#         if (dir_x, dir_y) != (0, 0):
-#             code = direction_map.get((dir_x, dir_y))
-#             if code is not None:
-#                 chain_code += code
-
-#     # Format into groups of 6 digits
-#     formatted_chain_code = " ".join(chain_code[i:i+6] for i in range(0, len(chain_code), 6))
-#     return formatted_chain_code
